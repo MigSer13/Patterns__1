@@ -12,6 +12,8 @@ import com.company.singleton.CurrentCountry;
 public class Main {
 
     public static void main(String[] args) {
+        //на проверку
+
         //Singleton
         System.out.println(CurrentCountry.getInstance().getTitle());
         System.out.println(CurrentCountry.getInstance().getTitle());
