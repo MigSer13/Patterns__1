@@ -11,6 +11,13 @@ import com.company.bridge.WoodenFence;
 import com.company.buider.Car;
 import com.company.buider.CarBuilderImpl;
 import com.company.buider.Model;
+import com.company.chain_of_responsibility.MailMessage;
+import com.company.chain_of_responsibility.Message;
+import com.company.chain_of_responsibility.SmsMessage;
+import com.company.command.CoffeeMachine;
+import com.company.command.Command;
+import com.company.command.Lamp;
+import com.company.command.SmartHome;
 import com.company.composite.*;
 import com.company.facade.DeliveryService;
 import com.company.facade.Market;
@@ -19,8 +26,13 @@ import com.company.facade.OrderFacade;
 import com.company.factorymethod.Ministry;
 import com.company.factorymethod.MinistryFactory;
 import com.company.factorymethod.TitleMinistry;
+import com.company.iterator.Iterator;
+import com.company.iterator.ListOfBook;
 import com.company.proxy.CarProxy;
 import com.company.singleton.CurrentCountry;
+import com.company.strategy.SelectedStrategy;
+import com.company.strategy.SummerShoes;
+import com.company.strategy.WinterShoes;
 
 public class Main {
 
@@ -74,31 +86,62 @@ public class Main {
 //        CarProxy carNissan = new CarProxy(new com.company.proxy.Car(Model.NISSAN, "Patrol"));
 //        carNissan.start();
 
-        //Bridge
-        House house = new BrickHouse(new ProfiledSheetFence());
-        house.showDetails();
+//        //Bridge
+//        House house = new BrickHouse(new ProfiledSheetFence());
+//        house.showDetails();
+//
+//        //Composite (Компоновщик)
+//        Shell tie1 = new Tie();
+//        Shell tie2 = new Tie();
+//
+//        Shell suit1 = new Suit();
+//        Shell suit2 = new Suit();
+//
+//        Shell toothBrush = new ToothBrush();
+//
+//        Suitcase suitcase1 = new Suitcase();
+//        suitcase1.addComponent(tie1);
+//        suitcase1.addComponent(suit1);
+//
+//        Suitcase suitcase2 = new Suitcase();
+//        suitcase2.addComponent(tie2);
+//        suitcase2.addComponent(suit2);
+//        suitcase2.addComponent(toothBrush);
+//
+//        Suitcase suitcaseSum = new Suitcase();
+//        suitcaseSum.addComponent(suitcase1);
+//        suitcaseSum.addComponent(suitcase2);
 
-        //Composite (Компоновщик)
-        Shell tie1 = new Tie();
-        Shell tie2 = new Tie();
+        //Decorator
 
-        Shell suit1 = new Suit();
-        Shell suit2 = new Suit();
+/////////////////////////////////////////////////////////////////////////////////
+//        //chain of responsibility
+//        Message smsMessage = new SmsMessage();
+//        Message mailMessage = new MailMessage();
+//        smsMessage.setNextMessage(mailMessage);
+//        smsMessage.send("Всем привет");
 
-        Shell toothBrush = new ToothBrush();
+        //Command
+//        Command lamp = new Lamp();
+//        Command coffeeMachine = new CoffeeMachine();
+//        SmartHome smartHome = new SmartHome();
+//        smartHome.addCommand(lamp);
+//        smartHome.addCommand(coffeeMachine);
+//        smartHome.execute();
 
-        Suitcase suitcase1 = new Suitcase();
-        suitcase1.addComponent(tie1);
-        suitcase1.addComponent(suit1);
+        //Iterator
+//        ListOfBook listOfBook = new ListOfBook(new String[]{"Война и мир", "Идиот", "Евгений Онегин"});
+//        Iterator iterator = listOfBook.getIterator();
+//        while (iterator.hasNext()){
+//            System.out.println(iterator.next());
+//        }
 
-        Suitcase suitcase2 = new Suitcase();
-        suitcase2.addComponent(tie2);
-        suitcase2.addComponent(suit2);
-        suitcase2.addComponent(toothBrush);
+        //Strategy
+        SelectedStrategy selectedStrategy = new SelectedStrategy(new WinterShoes());
+        System.out.println(selectedStrategy.getList());
 
-        Suitcase suitcaseSum = new Suitcase();
-        suitcaseSum.addComponent(suitcase1);
-        suitcaseSum.addComponent(suitcase2);
+//////////////////////////////////////////////////////////////////////////////
+
 
 
 
