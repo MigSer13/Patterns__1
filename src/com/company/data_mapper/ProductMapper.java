@@ -7,22 +7,27 @@ import java.sql.SQLException;
 import java.util.Map;
 
 public class ProductMapper {
-    private final Connection connection;
+    private static ProductMapper instance;
+    private static Connection connection;
 
-    public ProductMapper(Connection connection) {
-        this.connection = connection;
+    public static ProductMapper getInstance() {
+        if(instance == null){
+            connection = ConnectionPool.getInstance().getConnection();
+            instance = new ProductMapper();
+        }
+        return instance;
     }
 
     public Product findById(Long id) throws SQLException, ProductNotFoundException {
         Map<Long, Product> productMap = ProductIdentityMap.getInstance().getProductMap();
-        if (productMap.containsKey(id)){
+        if (productMap.containsKey(id)) {
             return productMap.get(id);
         }
 
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, title, price FROM products WHERE id = ?");
         preparedStatement.setLong(1, id);
-        try (ResultSet resultSet = preparedStatement.executeQuery()){
-            while (resultSet.next()){
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
                 Product product = new Product();
                 product.setId(resultSet.getLong(1));
                 product.setTitle(resultSet.getString(2));
@@ -41,8 +46,8 @@ public class ProductMapper {
 
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, title, price FROM products WHERE title = ?");
         preparedStatement.setString(1, title);
-        try (ResultSet resultSet = preparedStatement.executeQuery()){
-            while (resultSet.next()){
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
                 Product product = new Product();
                 product.setId(resultSet.getLong(1));
                 product.setTitle(resultSet.getString(2));
@@ -52,5 +57,28 @@ public class ProductMapper {
             }
         }
         throw new ProductNotFoundException("Could not find product with TITLE " + title);
+    }
+
+    public Long insertNew(Product product) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO products(title, price) VALUES(?, ?)");
+        preparedStatement.setString(1, product.getTitle());
+        preparedStatement.setBigDecimal(2, product.getPrice());
+        int rows = preparedStatement.executeUpdate();
+        if (rows != 0) {
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                Long id = resultSet.getLong(1);
+                return id;
+            }
+        }
+        throw new SQLException("The product has not beem created " + product);
+    }
+
+    public void update(Product product) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("UPDATE products SET title=?, price=? WHERE id = ?");
+        preparedStatement.setString(1, product.getTitle());
+        preparedStatement.setBigDecimal(2, product.getPrice());
+        preparedStatement.setLong(3, product.getId());
+        preparedStatement.executeQuery();
     }
 }

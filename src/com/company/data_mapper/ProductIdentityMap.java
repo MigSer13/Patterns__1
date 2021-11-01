@@ -1,5 +1,7 @@
 package com.company.data_mapper;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +25,21 @@ public class ProductIdentityMap {
     }
 
     public void addProduct(Product product){
+        try {
+            Long id = ProductMapper.getInstance().insertNew(product);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        productMap.put(product.getId(), product);
+    }
+    public void updateProduct(Product product){
+        try {
+            ProductMapper.getInstance().update(product);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ProductNotFoundException e) {
+            e.printStackTrace();
+        }
         productMap.put(product.getId(), product);
     }
 
