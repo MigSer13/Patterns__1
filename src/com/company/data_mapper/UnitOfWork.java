@@ -56,6 +56,15 @@ public class UnitOfWork {
         }
         dirtyObjects.clear();
     }
+    private void deleteRemoved() {
+        for (DomainObject removeObject : removeObjects) {
+            if(removeObject.getClass().equals(Product.class)){
+                ProductIdentityMap.getInstance().removeProduct((Product) removeObject);
+                commit();
+            }
+        }
+        removeObjects.clear();
+    }
 
 
 }

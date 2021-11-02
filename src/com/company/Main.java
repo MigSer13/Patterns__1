@@ -19,6 +19,10 @@ import com.company.command.Command;
 import com.company.command.Lamp;
 import com.company.command.SmartHome;
 import com.company.composite.*;
+import com.company.data_mapper.Product;
+import com.company.data_mapper.ProductMapper;
+import com.company.data_mapper.ProductNotFoundException;
+import com.company.data_mapper.UnitOfWork;
 import com.company.facade.DeliveryService;
 import com.company.facade.Market;
 import com.company.facade.Order;
@@ -33,6 +37,9 @@ import com.company.singleton.CurrentCountry;
 import com.company.strategy.SelectedStrategy;
 import com.company.strategy.SummerShoes;
 import com.company.strategy.WinterShoes;
+
+import java.math.BigDecimal;
+import java.sql.SQLException;
 
 public class Main {
 
@@ -142,11 +149,34 @@ public class Main {
 
 //////////////////////////////////////////////////////////////////////////////
 
+        //Data Mapper & Identity Map
+        Product product = new Product();
+        product.setTitle("Ноутбук");
+        product.setPrice(BigDecimal.valueOf(111_000L));
+        product.markNew();
 
-        //Data Mapper
+        try {
+            Product product1 = ProductMapper.getInstance().findById(22L);
+            product1.setPrice(BigDecimal.valueOf(42_000L));
+            product1.markDirty();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ProductNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            Product product2 = ProductMapper.getInstance().findById(11L);
+            product2.markRemoved();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ProductNotFoundException e) {
+            e.printStackTrace();
+        }
+        UnitOfWork.getThreadLocal().commit();
 
 
 
+        //////////////////////////////////////////////////////////////////
 
     }
 }

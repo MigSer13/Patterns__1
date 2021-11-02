@@ -37,13 +37,20 @@ public class ProductIdentityMap {
             ProductMapper.getInstance().update(product);
         } catch (SQLException e) {
             e.printStackTrace();
-        } catch (ProductNotFoundException e) {
-            e.printStackTrace();
         }
         productMap.put(product.getId(), product);
     }
 
     public Product getProduct(Long id){
         return productMap.get(id);
+    }
+
+    public void removeProduct(Product product) {
+        try {
+            ProductMapper.getInstance().remove(product);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        productMap.remove(product.getId(), product);
     }
 }

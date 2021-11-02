@@ -81,4 +81,10 @@ public class ProductMapper {
         preparedStatement.setLong(3, product.getId());
         preparedStatement.executeQuery();
     }
+
+    public void remove(Product product) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM products WHERE id = ?");
+        preparedStatement.setLong(1, product.getId());
+        preparedStatement.executeUpdate();
+    }
 }
