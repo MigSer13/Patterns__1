@@ -71,7 +71,7 @@ public class ProductMapper {
                 return id;
             }
         }
-        throw new SQLException("The product has not beem created " + product);
+        throw new SQLException("The product has not been created " + product);
     }
 
     public void update(Product product) throws SQLException {
