@@ -180,6 +180,26 @@ public class Main {
         //MVC
         // user of web -> Controller -> EmployeeService -> EmployeeRepository -> Controller -> View
 
+        /////////////////////////////////////////////////////////////////
+        //Антипаттерны
+        // 1) Шифрованный код - был в магазине метод findById (если бы кода в нем стало больше, то стало бы непонятно, что переменная "p" означает )
+//        @GetMapping(value = "/{id}") findById
+//        public ProductDto findById(@PathVariable Long id) {
+//            Product p = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
+//            return new ProductDto(p);
+//        }
+        // 2) Фактор невероятности - при сетевом обмене ожидается строка с "auth", разделенная пробелами, но
+        //      не делается проверка на лишние пробелы (как внешние так и внутренние, если они больше одного)
+//        ByteBuf byteBufIn = (ByteBuf) msg;
+//        if (typeAction == TypeAction.AUTH || byteBufIn.readableBytes() == 4) {
+//            StringBuilder stringBuilder = new StringBuilder();
+//            while (byteBufIn.isReadable()) {
+//                stringBuilder.append((char) byteBufIn.readByte());
+//            }
+//            String requestAuth = stringBuilder.toString();
+//            if (requestAuth.startsWith("auth")) {
+//                String[] strAuth = requestAuth.split(" ");
+//                .................
 
 
 
